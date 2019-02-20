@@ -1,0 +1,98 @@
+第25章 SNMP：简单网络管理协议
+基于TCP/IP的网络管理
+（1） 网络管理站 （管理进程）
+（2）被管网络单元（被管设备）
+被管设备：路由器，X终端，终端服务器，打印机
+被管设备端的软件——代理程序
+
+管理进程和代理进程之间的通信
+1）管理进程向代理进程发出请求
+2）代理进程主动报告
+
+基于TCP/IP的网络管理包含3个部分
+1）管理信息库MIB
+2）关于MIB的一套公用的结构和表示符号（管理信息结构）
+3）管理进程和代理进程间的通信协议
+
+5种报文
+1）get-request 
+2)get-next-request
+3)set-request
+4)get-response
+5)trap
+
+管理信息结构
+数据类型
+1）INTEGER 2)OCTER STRING 3)DisplayString 
+4)OBJECT IDENTIFIER 
+5）COUNTER(非负的整数)
+6）SEQUENCE 和structure 类似
+如UDPEntry 1）IPAddress（IP地址） 2)INTEGER（端口号）
+7）SEQUENDE OF 向量（二维数组）
+
+对象标识符
+对象标识是整数序利，以·分隔，构成树形结构
+
+管理信息库介绍
+1.管理信息库MIB
+udpindatagrams（IP层发送到UDP层）不包括
+UDPinerror（错误报文）和UDPNoPorts（未接受）
+2.
+    1.system 组 （系统标识）
+    2.interface 组 
+    3.at 组 （地址转换组）
+    4.IP组
+    5.ICMP组（4个普通计数器变量）
+    ICMP组中的简单变量
+    收到/发出
+    ICMP报文总数
+     超时报文数/参数问题报文数/源站抑制报文数/重定向报文数 
+    回显请求/应答 时间戳请求/应答 地址掩码请求/应答
+    源站抑制（若发生数据拥堵，则发送回主机，减缓数据输送速度）
+
+    6.TCP组
+    TCP组中的简单变量
+    最大/小重传超时值
+    状态变迁数 CLOSED 到SYN_SENT
+              LISTEN 到SYN_RCVD
+              ESTABLISHED 
+    收到/发送/重传报文总数
+    TCP组的表格变量 （TCP连接表）
+    （连接状态，本地IP地址，本地端口号，远端IP地址，远端端口号）
+实例标识
+1.简单变量
+加.0 如对象标识1.3.6.1.2.1.7.1
+实例标识 1.3.6.1.2.1.7.1.0
+
+2.表格
+例如 UDP监听表
+UDPLocalAddress（IP地址） udpLocalPort（端口号）
+
+字典式排序规则
+1）先列后行
+2）对行的排序和索引的值有关
+
+简单例子：
+1）get-next 单变量 依次显示 
+2）表格访问 代理进程 先列后行返回下一个变量
+遍历整个表格
+
+1）接口MTU
+IP路由表取得SLIP连接的接口号，从而获得SLIP连接的MTU
+2）路由表
+
+Trap:
+代理进程主动发送trap到管理进程
+代理进程对自己进行初始化/重新初始化
+故障状态/工作状态
+
+表示SNMP的语法：
+ASN.1 和BER
+（Abstract Syntax Notation 1）
+(Basic Encoding Rule)
+ASN.1 描述数据和数据特征的正式语言
+和数据的存储和编码无关
+MIB和SNMP的字段用ASN.1描述
+
+BER是表示SNMP的编码方法
+整数+多少个字节的存储量+整数值
